@@ -1,12 +1,18 @@
-class Clicks:
-    def __init__(self, browser):
-        self.browser = browser
+import time
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.expected_conditions import staleness_of
 
-    def clicking(self):
-        try:
-            for i in clicklist:
-                print(i.get_attribute('outerHTML'))
-                i.click()
-                print('сlick')
-        finally:
-            print(clicklist)
+class Clicks:
+
+    def clicking(self, clicklist, browser):
+        handles = browser.window_handles
+        cur_win = browser.current_window_handle
+        for i in clicklist:
+            i.click()
+            print(handles)
+            # browser.switch_to_window([win for win in browser.window_handles if win != cur_win][0])
+            browser.switch_to_window(cur_win)
+
+

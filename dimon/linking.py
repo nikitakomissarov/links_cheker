@@ -1,17 +1,13 @@
-import requests
+import asks
 from selenium.webdriver.common.by import By
-from name import linking
-from name import clicking
-
+from selenium import webdriver
 
 class Links:
-    def __init__(self, browser):
-        self.browser = browser
 
-    def checklink(self):
-        burger_bar_links = self.browser.find_elemts(By.XPATH, "//a")
-        clicklist = list()
-        linkslist = list()
+    def linking(self, browser):
+        burger_bar_links = browser.find_elements(By.XPATH, "//a")
+        clicklist = list(burger_bar_links)
+        linklist = list()
         for inlink in burger_bar_links:
             try:
                 a = requests.head(inlink.get_attribute('href'))
@@ -26,4 +22,5 @@ class Links:
                     print("Link is Invalid/Broken:", clearlink, inlink.get_attribute('outerHTML'))
             except:
                 print('SomethingElseGetsWrong:', inlink.get_attribute('href'), inlink.get_attribute('outerHTML'))
+
         return clicklist
