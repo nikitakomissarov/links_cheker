@@ -1,4 +1,3 @@
-import re
 
 from asks import Links
 from page import Page
