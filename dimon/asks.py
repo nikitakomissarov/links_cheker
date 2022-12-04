@@ -39,22 +39,23 @@ class Links:
                             continue
 
                     except InvalidSchema:
-                        wrong_link = link.get_attribute('href'), link.get_attribute('outerHTML')
+                        wrong_link = link.get_attribute('href'), link.get_attribute('outerHTML'), self.browser.current_url
                         if wrong_link not in wrong_links:
                             wrong_links.append(wrong_link)
                             print(f'InvalidSchema {wrong_link}')
 
                     except MissingSchema:
-                        wrong_link = link.get_attribute('href'), link.get_attribute('outerHTML')
+                        wrong_link = link.get_attribute('href'), link.get_attribute('outerHTML'), self.browser.current_url
                         if wrong_link not in wrong_links:
                             wrong_links.append(wrong_link)
                             print(f'InvalidSchema {wrong_link}')
 
                     except ConnectionError:
                         print(f'ConnectionError:" {link.get_attribute("href"), link.get_attribute("outerHTML")}')
-                        invalidlink = link.get_attribute('href'), link.get_attribute('outerHTML'),
+                        invalidlink = link.get_attribute('href'), link.get_attribute('outerHTML'), self.browser.current_url
                         if invalidlink not in invalid_links:
                             invalid_links.append(invalidlink)
+                            print(f'ConnectionError:" {invalidlink}')
                 else:
                     continue
         finally:
