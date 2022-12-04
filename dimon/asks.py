@@ -55,7 +55,7 @@ class Links:
                         invalidlink = link.get_attribute('href'), link.get_attribute('outerHTML'), self.browser.current_url
                         if invalidlink not in invalid_links:
                             invalid_links.append(invalidlink)
-                            print(f'ConnectionError:" {invalidlink}')
+                            print(f'ConnectionError, LINK IS INVALID:" {invalidlink}')
                 else:
                     continue
         finally:
