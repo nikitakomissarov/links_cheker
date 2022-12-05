@@ -51,7 +51,6 @@ class Links:
                             print(f'InvalidSchema {wrong_link}')
 
                     except ConnectionError:
-                        print(f'ConnectionError:" {link.get_attribute("href"), link.get_attribute("outerHTML")}')
                         invalidlink = link.get_attribute('href'), link.get_attribute('outerHTML'), self.browser.current_url
                         if invalidlink not in invalid_links:
                             invalid_links.append(invalidlink)

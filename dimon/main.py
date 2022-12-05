@@ -3,7 +3,7 @@ from asks import Links
 from page import Page
 from filter import filtering
 
-url = 'http://ouds.alm.su' #Указать сайт, на котором производится проверка
+url = 'http://ouds.alm.su/' #Указать сайт, на котором производится проверка
 key = 'http://ouds' #Указать маркер, по которому скрипт будет определять, какая ссылка относится к сайту
 
 if __name__ == "__main__":
@@ -30,7 +30,7 @@ if __name__ == "__main__":
         wrong_links = filtering(wrong_links, next_clean_links[3])
     print(f'INVALID LINKS: {invalid_links}')  #Вывод список ВСЕХ ссылок, которые не передали 200
     print(f'FOREIGN LINKS: {foreign_links}')  #Выводит список внешних ссылок
-    print(f'WRONG LINKS: {wrong_links}') #Выводит объектов, по которым структурные ошибки (invalid schema и missing schema)
+    # print(f'WRONG LINKS: {wrong_links}') #Выводит объектов, по которым структурные ошибки (invalid schema и missing schema)
 
 
 
