@@ -1,49 +1,36 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium import webdriver
-import time
-import math
 
-def calc(x):
-  return math.log(abs(12*math.sin(x)))
+from asks import Links
+from page import Page
+from filter import filtering
 
-try:
-    browser = webdriver.Chrome()
-    browser.implicitly_wait(5)
+url = 'http://ouds.alm.su/' #Указать сайт, на котором производится проверка
+key = 'http://ouds' #Указать маркер, по которому скрипт будет определять, какая ссылка относится к сайту
 
-    browser.get("http://suninjuly.github.io/explicit_wait2.html")
+if __name__ == "__main__":
+    start = Page(url).get_driver()  # Создает драйвер в Page
+    final_links = (Links(start).requesting(key))  # Передает драйвер в поиск ссылок в Asks
 
-# говорим Selenium проверять в течение 5 секунд, пока кнопка не станет кликабельной
-    texts = '$100'
+    filtered_links = final_links[0] #Разбивка возвращенного списка ссылок на 3 по группам, успешные
+    invalid_links = final_links[1] #С ошибкой подключения
+    foreign_links = final_links[2] # Внешние
+    wrong_links = final_links[3]
 
+    # print(f'FIRST PAGE GOTTEN {filtered_links}')
+    # print(f'WRONG LINKS {invalid_links}')
+    # print(f'FOREIGN LINKS {foreign_links}')
 
-    timer = WebDriverWait(browser, 12).until(
-         EC.text_to_be_present_in_element((By.ID, "price"), texts)
-     )
-    print(timer)
-
-    message = browser.find_element(By.ID, "book").click()
-
-
-    num1 = browser.find_element(By.ID, "input_value")
-    num1 = int(num1.text)
-    x = num1
-    print(x)
-    y = calc(x)
-    print(y)
-
-    browser.find_element(By.ID, "answer").send_keys(y)
+    for i in filtered_links:
+        print(f'PAGE IN PROGRESS {i}')
+        new_url = i
+        next_page = Page(new_url).get_driver() #Снова передает в класс, чтобы создать экземпляр драйвера хром
+        next_clean_links = Links(next_page).requesting(key, filtered_links, invalid_links, foreign_links, wrong_links) #Проверка списка ранее полученных ссылок и формирование нового списка ссылок
+        filtered_links = filtering(filtered_links, next_clean_links[0]) #Фильтрация полученных вновь списков на предмет дублей и отправка обратно в цикл
+        invalid_links = filtering(invalid_links, next_clean_links[1])
+        foreign_links = filtering(foreign_links, next_clean_links[2])
+        wrong_links = filtering(wrong_links, next_clean_links[3])
+    print(f'INVALID LINKS: {invalid_links}')  #Вывод список ВСЕХ ссылок, которые не передали 200
+    print(f'FOREIGN LINKS: {foreign_links}')  #Выводит список внешних ссылок
+    # print(f'WRONG LINKS: {wrong_links}') #Выводит объектов, по которым структурные ошибки (invalid schema и missing schema)
 
 
-    button2 = browser.find_element(By.ID, "solve").click()
-    assert 'Stepik1' in browser.switch_to.alert.text
-
-
-
-
-
-
-finally:
-    browser.quit()
 
